@@ -5,9 +5,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var db_info = require('./db_info');
+//var session = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var api = require('./routes/api');
+
+
 
 var app = express();
 
@@ -22,9 +26,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//app.use(session({secret: 'ssshhhhh'}));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api', api);
+
 
 var connection = mysql.createConnection({
     host    :'localhost',
@@ -33,6 +40,7 @@ var connection = mysql.createConnection({
     password : db_info.DB_PW,
     database:db_info.DB_NAME
 });
+
 
 connection.connect(function(err) {
     if (err) {
@@ -44,6 +52,8 @@ connection.connect(function(err) {
         console.log('db connected.');
     }
 });
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
