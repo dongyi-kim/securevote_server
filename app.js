@@ -3,8 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mysql = require('mysql');
-var db_info = require('./db_info');
+
 //var session = require('express-session');
 
 var routes = require('./routes/index');
@@ -31,27 +30,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
-
-
-var connection = mysql.createConnection({
-    host    :'localhost',
-    port : 3306,
-    user : db_info.DB_ID,
-    password : db_info.DB_PW,
-    database:db_info.DB_NAME
-});
-
-
-connection.connect(function(err) {
-    if (err) {
-        console.error('mysql connection error');
-        console.error(err);
-        throw err;
-    }else
-    {
-        console.log('db connected.');
-    }
-});
 
 
 
